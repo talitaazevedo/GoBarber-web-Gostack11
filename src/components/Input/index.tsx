@@ -1,4 +1,10 @@
-import React, { InputHTMLAttributes, useEffect, useRef } from 'react';
+import React, {
+  InputHTMLAttributes,
+  useEffect,
+  useRef,
+  useState,
+  useCallback,
+} from 'react';
 import { IconBaseProps } from 'react-icons';
 import { useField } from '@unform/core';
 
@@ -9,8 +15,29 @@ interface Inputprops extends InputHTMLAttributes<HTMLInputElement> {
   icon?: React.ComponentType<IconBaseProps>;
 }
 const Input: React.FC<Inputprops> = ({ name, icon: Icon, ...rest }) => {
-  const inputRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [isFocused, setIsFocused] = useState(false);
+  const [isFilled, setIsFilled] = useState(false);
   const { fieldName, defaultValue, error, registerField } = useField(name);
+  // Quando tenho uma um componente em forma de função, toda vez que ele for criado ele vai ser renderizado
+  // o hook useCallBack permite que as funções  sejam armazenadas na memoria.
+  const handleInputBlur = useCallback(() => {
+    setIsFocused(false);
+    // InputRef armazena as referências de input o .current acessa propriedade direto do input
+
+    // if (inputRef.current?.value) {
+    //   setIsFilled(true);
+    // } else {
+    //   setIsFilled(false);
+    // }
+    // Faz a mesma coisa do if mas transformando em booleano !! com duas negações a primeira nega e a segunda transforma em true.
+
+    setIsFilled(!!inputRef.current?.value);
+  }, []);
+
+  const handleInputFocus = useCallback(() => {
+    setIsFocused(true);
+  }, []);
 
   useEffect(() => {
     registerField({
@@ -19,10 +46,17 @@ const Input: React.FC<Inputprops> = ({ name, icon: Icon, ...rest }) => {
       path: 'value',
     });
   }, [fieldName, registerField]);
+
   return (
-    <Container>
+    <Container isFilled={isFilled} isFocused={isFocused}>
       {Icon && <Icon size={20} />}
-      <input defaultValue={defaultValue} ref={inputRef} {...rest} />
+      <input
+        onFocus={handleInputFocus}
+        onBlur={handleInputBlur}
+        defaultValue={defaultValue}
+        ref={inputRef}
+        {...rest}
+      />
     </Container>
   );
 };
