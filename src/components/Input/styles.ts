@@ -4,7 +4,7 @@ export const Container = styled.div`
   background: #232129;
   border-radius: 10px;
   border: 2px solid #232129;
-  padding: 0 16px;
+  padding: 16px;
   width: 100%;
 
   color: #666360;
@@ -18,6 +18,7 @@ export const Container = styled.div`
     flex: 1;
     color: #f4ede8;
     background: transparent;
+    border: 2px solid #232129;
     &::placeholder {
       color: #666360;
     }
