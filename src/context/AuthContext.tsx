@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useState } from 'react';
+import React, { createContext, useCallback, useState, useContext } from 'react';
 import api from '../services/api';
 
 interface AuthState {
@@ -22,9 +22,7 @@ interface AuthContextData {
 //  aqui podemos gravar o nome o token e etc.
 // No caso dessa váriavel  criamos uma Interface,
 // isso aqui é um hack que faz com que o contexto inicialize vazio ({} as AuthContext)
-export const AuthContext = createContext<AuthContextData>(
-  {} as AuthContextData,
-);
+const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 export const AuthProvider: React.FC = ({ children }) => {
   //
@@ -52,3 +50,11 @@ export const AuthProvider: React.FC = ({ children }) => {
     </AuthContext.Provider>
   );
 };
+// Essa função aqui exporta tudo
+export function useAuth(): AuthContextData {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used  within an AuthProvider');
+  }
+  return context;
+}
