@@ -5,7 +5,7 @@ import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
 
-import { AuthContext, AuthProvider } from '../../context/AuthContext';
+import { AuthContext } from '../../context/AuthContext';
 
 import logoImg from '../../assets/logo.svg';
 
@@ -22,15 +22,18 @@ interface SignInFormData {
 
 const SignIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
-  console.log(formRef);
+  // console.log(formRef);
   // Utilizando o context  com o hook useContext
-  const { signIn } = useContext(AuthContext);
+  const { user, signIn } = useContext(AuthContext);
   // const { name } = useContext(AuthContext);
-  console.log(signIn);
+  // console.log(signIn);
+
+  // console.log(user);
 
   const handleSubmit = useCallback(
     // Com o useCallback toda váriavel externa ou função
     // Adicione lá no final [] para o useCallback monitorar.
+    // data: SignInFormData => é o tipo de dado que o data vai receber.
     async (data: SignInFormData) => {
       try {
         formRef.current?.setErrors({});
