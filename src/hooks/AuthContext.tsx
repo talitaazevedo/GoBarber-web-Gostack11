@@ -13,6 +13,7 @@ interface SignIngCredentials {
 interface AuthContextData {
   user: object;
   signIn(credentials: SignIngCredentials): Promise<void>;
+  signOut(): void;
 }
 
 // Context API  -  é uma das coisas mais fantasticas do react.
@@ -44,8 +45,14 @@ export const AuthProvider: React.FC = ({ children }) => {
     setData({ token, user });
     // console.log(response.data);
   }, []);
+  const signOut = useCallback(() => {
+    localStorage.removeItem('@GoBarber:token');
+    localStorage.removeItem('@GoBarber:user');
+
+    setData({} as AuthState);
+  }, []);
   return (
-    <AuthContext.Provider value={{ user: data.user, signIn }}>
+    <AuthContext.Provider value={{ user: data.user, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );
