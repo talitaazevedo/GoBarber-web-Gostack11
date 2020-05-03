@@ -5,7 +5,8 @@ import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
 
-import { useAuth } from '../../hooks/AuthContext';
+import { useAuth } from '../../hooks/auth';
+import { useToast } from '../../hooks/toast';
 
 import logoImg from '../../assets/logo.svg';
 
@@ -25,6 +26,7 @@ const SignIn: React.FC = () => {
   // console.log(formRef);
   // Utilizando o context  com o hook useContext
   const { signIn } = useAuth();
+  const { addToast } = useToast();
   // const { name } = useContext(AuthContext);
   // console.log(signIn);
 
@@ -46,7 +48,7 @@ const SignIn: React.FC = () => {
         await schema.validate(data, {
           abortEarly: false,
         });
-        signIn({
+        await signIn({
           email: data.email,
           password: data.password,
         });
@@ -59,9 +61,10 @@ const SignIn: React.FC = () => {
         }
         // ? caso não seja retornar uma mensagem mais generica.
         //* retornar um toast
+        addToast();
       }
     },
-    [signIn],
+    [signIn, addToast],
   );
 
   return (
