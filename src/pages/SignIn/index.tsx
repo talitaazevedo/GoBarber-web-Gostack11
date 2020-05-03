@@ -51,10 +51,14 @@ const SignIn: React.FC = () => {
           password: data.password,
         });
       } catch (err) {
-        const errors = getValidationErrors(err);
-
-        // ? significa que num primeiro momento o formRef é nulo
-        formRef.current?.setErrors(errors);
+        // ! Verificar se o erro é uma instancia de Yup Validation Error
+        if (err instanceof Yup.ValidationError) {
+          const errors = getValidationErrors(err);
+          // ? significa que num primeiro momento o formRef é nulo
+          formRef.current?.setErrors(errors);
+        }
+        // ? caso não seja retornar uma mensagem mais generica.
+        //* retornar um toast
       }
     },
     [signIn],
