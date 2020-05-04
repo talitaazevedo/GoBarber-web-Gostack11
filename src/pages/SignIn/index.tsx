@@ -1,7 +1,7 @@
 import React, { useCallback, useRef } from 'react';
 import { FiLogIn, FiMail, FiLock } from 'react-icons/fi';
 import { Form } from '@unform/web';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
@@ -29,6 +29,7 @@ const SignIn: React.FC = () => {
 
   const { signIn } = useAuth();
   const { addToast } = useToast();
+  const history = useHistory();
 
   // const { name } = useContext(AuthContext);
 
@@ -52,6 +53,7 @@ const SignIn: React.FC = () => {
           email: data.email,
           password: data.password,
         });
+        history.push('/dashboard');
       } catch (err) {
         // ! Verificar se o erro é uma instancia de Yup Validation Error
         if (err instanceof Yup.ValidationError) {
@@ -64,12 +66,12 @@ const SignIn: React.FC = () => {
 
         addToast({
           type: 'error',
-          title: 'Erro na axutenticação',
+          title: 'Erro na autenticação',
           description: 'Ocorreu um erro ao fazer login',
         });
       }
     },
-    [signIn, addToast],
+    [signIn, addToast, history],
   );
 
   return (
