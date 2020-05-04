@@ -15,7 +15,8 @@ import Button from '../../components/Button';
 
 import { Container, Content, Background } from './styles';
 import getValidationErrors from '../../utils/getValidationErrors';
-
+// TODO: Ler Sobre pacotes de animação
+// Utilizando React SPring
 interface SignInFormData {
   email: string;
   password: string;

@@ -11,6 +11,7 @@ import { ToastMessage, useToast } from '../../../hooks/toast';
 
 interface ToastProps {
   message: ToastMessage;
+  style: object;
 }
 // *  Armazena os icones  para cada tipo de Toast
 const icons = {
@@ -22,7 +23,7 @@ const icons = {
   Está aula foi muito boa, o componente de toast está totalmente isolado.
 
 */
-const Toast: React.FC<ToastProps> = ({ message }) => {
+const Toast: React.FC<ToastProps> = ({ message, style }) => {
   const { removeToast } = useToast();
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -36,7 +37,11 @@ const Toast: React.FC<ToastProps> = ({ message }) => {
     };
   }, [removeToast, message.id]);
   return (
-    <Container type={message.type} hasDescription={!!message.description}>
+    <Container
+      type={message.type}
+      hasDescription={!!message.description}
+      style={style}
+    >
       {/* Caso não tenha  um tipo ele retorna info por padrão */}
       {icons[message.type || 'info']}
       <div>
