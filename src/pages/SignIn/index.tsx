@@ -61,7 +61,11 @@ const SignIn: React.FC = () => {
         }
         // ? caso não seja retornar uma mensagem mais generica.
         //* retornar um toast
-        addToast();
+        addToast({
+          type: 'error',
+          title: 'Erro na axutenticação',
+          description: 'Ocorreu um erro ao fazer login',
+        });
       }
     },
     [signIn, addToast],
