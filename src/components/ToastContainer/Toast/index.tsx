@@ -39,7 +39,8 @@ const Toast: React.FC<ToastProps> = ({ message, style }) => {
   return (
     <Container
       type={message.type}
-      hasDescription={!!message.description}
+      // Converte true para 1 e false para 0
+      hasDescription={Number(!!message.description)}
       style={style}
     >
       {/* Caso não tenha  um tipo ele retorna info por padrão */}
