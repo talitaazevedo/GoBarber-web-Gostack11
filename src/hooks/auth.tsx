@@ -37,8 +37,10 @@ export const AuthProvider: React.FC = ({ children }) => {
     const token = localStorage.getItem('@GoBarber:token');
     const user = localStorage.getItem('@GoBarber:user');
     if (token && user) {
+      api.defaults.headers.autorization = `Bearer ${token}`;
       return { token, user: JSON.parse(user) };
     }
+
     return {} as AuthState;
   });
   const signIn = useCallback(async ({ email, password }) => {
@@ -48,6 +50,13 @@ export const AuthProvider: React.FC = ({ children }) => {
       password,
     });
     const { token, user } = response.data;
+
+    localStorage.setItem('@GoBarber:token', token);
+    localStorage.setItem('@GoBarber:user', JSON.stringify(user));
+
+    // automatiza o token
+    api.defaults.headers.autorization = `Bearer ${token}`;
+
     setData({ token, user });
     // console.log(response.data);
   }, []);
