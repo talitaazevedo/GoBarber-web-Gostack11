@@ -21,6 +21,7 @@ interface AuthContextData {
   user: User;
   signIn(credentials: SignIngCredentials): Promise<void>;
   signOut(): void;
+  updateUser(user: User): void;
 }
 
 // Context API  -  é uma das coisas mais fantasticas do react.
@@ -38,7 +39,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     const token = localStorage.getItem('@GoBarber:token');
     const user = localStorage.getItem('@GoBarber:user');
     if (token && user) {
-      api.defaults.headers.autorization = `Bearer ${token}`;
+      api.defaults.headers.authorization = `Bearer ${token}`;
       return { token, user: JSON.parse(user) };
     }
 
@@ -67,8 +68,21 @@ export const AuthProvider: React.FC = ({ children }) => {
 
     setData({} as AuthState);
   }, []);
+
+  const updateUser = useCallback(
+    (user: User) => {
+      localStorage.setItem('@GoBarber:user', JSON.stringify(user));
+      setData({
+        token: data.token,
+        user,
+      });
+    },
+    [setData, data.token],
+  );
   return (
-    <AuthContext.Provider value={{ user: data.user, signIn, signOut }}>
+    <AuthContext.Provider
+      value={{ user: data.user, signIn, signOut, updateUser }}
+    >
       {children}
     </AuthContext.Provider>
   );
